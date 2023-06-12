@@ -70,6 +70,7 @@ public class MainActivity extends Activity {
         lvPersonajes= findViewById(R.id.lvPersonajes);
         colaPeticiones= Volley.newRequestQueue(this);
         listarProductos();
+        
 
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,12 +90,12 @@ public class MainActivity extends Activity {
                                             Toast.makeText(MainActivity.this, "Producto Eliminado con EXITO!", Toast.LENGTH_SHORT).show();
                                             etNumero.setText("");
                                             etNombre.setText("");
+                                            etCumpleaños.setText("");
                                             etEstatura.setText("");
-                                            etPrecioCompra.setText("");
-                                            etPrecioVenta.setText("");
-                                            etExistencias.setText("");
+                                            etPeso.setText("");
+                                            etComidafav.setText("");
                                             adapter.clear();
-                                            lvProductos.setAdapter(adapter);
+                                            lvPersonajes.setAdapter(adapter);
                                             listarProductos();
                                         } else if (response.getString("status").equals("Not Found")) {
                                             Toast.makeText(MainActivity.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
@@ -124,30 +125,30 @@ public class MainActivity extends Activity {
         btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etCodigoBarras.getText().toString().isEmpty()) {
+                if (etNumero.getText().toString().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Primero use el BOTÓN BUSCAR!", Toast.LENGTH_SHORT).show();
                 } else {
                     JSONObject productos = new JSONObject();
                     try {
-                        productos.put("codigobarras", etCodigoBarras.getText().toString());
-                        if (!etDescripcion.getText().toString().isEmpty()) {
-                            productos.put("descripcion", etDescripcion.getText().toString());
+                        productos.put("Numero", etNumero.getText().toString());
+                        if (!etNombre.getText().toString().isEmpty()) {
+                            productos.put("Nombre", etNombre.getText().toString());
                         }
 
-                        if (!etMarca.getText().toString().isEmpty()) {
-                            productos.put("marca", etMarca.getText().toString());
+                        if (!etCumpleaños.getText().toString().isEmpty()) {
+                            productos.put("cumplea", etCumpleaños.getText().toString());
                         }
 
-                        if (!etPrecioCompra.getText().toString().isEmpty()) {
-                            productos.put("preciocompra", Float.parseFloat(etPrecioCompra.getText().toString()));
+                        if (!etEstatura.getText().toString().isEmpty()) {
+                            productos.put("Estatura", Float.parseFloat(etEstatura.getText().toString()));
                         }
 
-                        if (!etPrecioVenta.getText().toString().isEmpty()) {
-                            productos.put("precioventa", Float.parseFloat(etPrecioVenta.getText().toString()));
+                        if (!etPeso.getText().toString().isEmpty()) {
+                            productos.put("Peso", Float.parseFloat(etPeso.getText().toString()));
                         }
 
-                        if (!etExistencias.getText().toString().isEmpty()) {
-                            productos.put("existencias", Float.parseFloat(etExistencias.getText().toString()));
+                        if (!etComidafav.getText().toString().isEmpty()) {
+                            productos.put("Comida Fav",etComidafav.getText().toString());
                         }
 
                     } catch (JSONException e) {
@@ -155,7 +156,7 @@ public class MainActivity extends Activity {
                     }
                     JsonObjectRequest actualizar = new JsonObjectRequest(
                             Request.Method.PUT,
-                            url + "actualizar/" + etCodigoBarras.getText().toString(),
+                            url + "actualizar/" + etNumero.getText().toString(),
                             productos,
                             new Response.Listener<JSONObject>() {
                                 @Override
@@ -163,14 +164,14 @@ public class MainActivity extends Activity {
                                     try {
                                         if (response.getString("status").equals("Producto actualizado")) {
                                             Toast.makeText(MainActivity.this, "Producto actualizado!", Toast.LENGTH_SHORT).show();
-                                            etCodigoBarras.setText("");
-                                            etDescripcion.setText("");
-                                            etMarca.setText("");
-                                            etPrecioCompra.setText("");
-                                            etPrecioVenta.setText("");
-                                            etExistencias.setText("");
+                                            etNumero.setText("");
+                                            etNombre.setText("");
+                                            etCumpleaños.setText("");
+                                            etEstatura.setText("");
+                                            etPeso.setText("");
+                                            etComidafav.setText("");
                                             adapter.clear();
-                                            lvProductos.setAdapter(adapter);
+                                            lvPersonajes.setAdapter(adapter);
                                             listarProductos();
                                         } else if (response.getString("status").equals("No encontrado")) {
                                             Toast.makeText(MainActivity.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
@@ -198,7 +199,7 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 JsonObjectRequest peticion=new JsonObjectRequest(
                         Request.Method.GET,
-                        url + etCodigoBarras.getText().toString(),
+                        url + etNumero.getText().toString(),
                         null,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -207,11 +208,11 @@ public class MainActivity extends Activity {
                                     Toast.makeText(MainActivity.this, "producto no encontrado", Toast.LENGTH_SHORT).show();
                                 else {
                                     try {
-                                        etDescripcion.setText(response.getString("descripcion"));
-                                        etMarca.setText(response.getString("marca"));
-                                        etPrecioCompra.setText(String.valueOf(response.getInt("preciocompra")));
-                                        etPrecioVenta.setText(String.valueOf(response.getInt("precioventa")));
-                                        etExistencias.setText(String.valueOf(response.getInt("existencias")));
+                                        etNombre.setText(response.getString("Nombre"));
+                                        etCumpleaños.setText(response.getString("Cumpleaños"));
+                                        etEstatura.setText(String.valueOf(response.getInt("Estatura")));
+                                        etPeso.setText(String.valueOf(response.getInt("Peso")));
+                                        etComidafav.setText(String.valueOf(response.getInt("Comida Fav")));
                                     } catch (JSONException e) {
                                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
@@ -238,12 +239,12 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 JSONObject producto = new JSONObject();
                 try {
-                    producto.put("codigobarras",etCodigoBarras.getText().toString());
-                    producto.put("descripcion",etDescripcion.getText().toString());
-                    producto.put("marca",etMarca.getText().toString());
-                    producto.put("preciocompra",Float.parseFloat(etPrecioCompra.getText().toString()));
-                    producto.put("precioventa",Float.parseFloat(etPrecioVenta.getText().toString()));
-                    producto.put("existencias",Float.parseFloat(etExistencias.getText().toString()));
+                    producto.put("Numero",etNumero.getText().toString());
+                    producto.put("Nombre",etNombre.getText().toString());
+                    producto.put("cumpleaños",etCumpleaños.getText().toString());
+                    producto.put("Estatura",Float.parseFloat(etEstatura.getText().toString()));
+                    producto.put("Peso",Float.parseFloat(etPeso.getText().toString()));
+                    producto.put("Comida fav",etComidafav.getText().toString());
                 } catch (JSONException e) {
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -257,14 +258,14 @@ public class MainActivity extends Activity {
                                 try {
                                     if (response.getString("status").equals("Producto insertado")) {
                                         Toast.makeText(MainActivity.this, "Producto insertado con EXITO!", Toast.LENGTH_SHORT).show();
-                                        etCodigoBarras.setText("");
-                                        etDescripcion.setText("");
-                                        etMarca.setText("");
-                                        etPrecioCompra.setText("");
-                                        etPrecioVenta.setText("");
-                                        etExistencias.setText("");
-                                        adapter.clear();
-                                        lvProductos.setAdapter(adapter);
+                                            etNumero.setText("");
+                                            etNombre.setText("");
+                                            etCumpleaños.setText("");
+                                            etEstatura.setText("");
+                                            etPeso.setText("");
+                                            etComidafav.setText("");
+                                            adapter.clear();
+                                            lvPersonajes.setAdapter(adapter);
                                         listarProductos();
                                     }
                                 }catch (JSONException e) {
@@ -294,10 +295,10 @@ public class MainActivity extends Activity {
                     public void onResponse(JSONArray response) {
                         for(int i=0;i<response.length();i++){
                             try {
-                                String codigobarras=response.getJSONObject(i).getString("codigobarras");
-                                String descripcion=response.getJSONObject(i).getString("descripcion");
-                                String marca=response.getJSONObject(i).getString("marca");
-                                origenDatos.add(codigobarras + ": " +descripcion+ ": " +marca);
+                                String Numero=response.getJSONObject(i).getString("Numero");
+                                String Nombre=response.getJSONObject(i).getString("Nombre");
+                                String Cumpleaños=response.getJSONObject(i).getString("Cumpleaños");
+                                origenDatos.add(Numero + ": " +Nombre+ ": " +Cumpleaños);
                             } catch (JSONException e) {
 
                             }
