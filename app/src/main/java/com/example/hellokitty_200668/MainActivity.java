@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     private ArrayList<String> origenDatos=new ArrayList<String>();
     private ArrayAdapter<String>adapter;
 
-    private String url="http://10.10.62.6:3000/";
+    private String url="http://10.10.62.3:3000/";
 
 
     @Override
@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        if (response.getString("status").equals("Producto eliminado")) {
+                                        if (response.getString("status").equals("Personaje eliminado")) {
                                             Toast.makeText(MainActivity.this, "Producto Eliminado con EXITO!", Toast.LENGTH_SHORT).show();
                                             etNumero.setText("");
                                             etNombre.setText("");
@@ -130,25 +130,25 @@ public class MainActivity extends Activity {
                 } else {
                     JSONObject productos = new JSONObject();
                     try {
-                        productos.put("Numero", etNumero.getText().toString());
+                        productos.put("numero", etNumero.getText().toString());
                         if (!etNombre.getText().toString().isEmpty()) {
-                            productos.put("Nombre", etNombre.getText().toString());
+                            productos.put("nombre", etNombre.getText().toString());
                         }
 
                         if (!etCumpleaños.getText().toString().isEmpty()) {
-                            productos.put("cumplea", etCumpleaños.getText().toString());
+                            productos.put("cumpleaños", etCumpleaños.getText().toString());
                         }
 
                         if (!etEstatura.getText().toString().isEmpty()) {
-                            productos.put("Estatura", Float.parseFloat(etEstatura.getText().toString()));
+                            productos.put("estatura", etEstatura.getText().toString());
                         }
 
                         if (!etPeso.getText().toString().isEmpty()) {
-                            productos.put("Peso", Float.parseFloat(etPeso.getText().toString()));
+                            productos.put("peso",etPeso.getText().toString());
                         }
 
                         if (!etComidafav.getText().toString().isEmpty()) {
-                            productos.put("Comida Fav",etComidafav.getText().toString());
+                            productos.put("comidafav",etComidafav.getText().toString());
                         }
 
                     } catch (JSONException e) {
@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        if (response.getString("status").equals("Producto actualizado")) {
+                                        if (response.getString("status").equals("Personaje actualizado")) {
                                             Toast.makeText(MainActivity.this, "Producto actualizado!", Toast.LENGTH_SHORT).show();
                                             etNumero.setText("");
                                             etNombre.setText("");
@@ -208,11 +208,11 @@ public class MainActivity extends Activity {
                                     Toast.makeText(MainActivity.this, "producto no encontrado", Toast.LENGTH_SHORT).show();
                                 else {
                                     try {
-                                        etNombre.setText(response.getString("Nombre"));
-                                        etCumpleaños.setText(response.getString("Cumpleaños"));
-                                        etEstatura.setText(String.valueOf(response.getInt("Estatura")));
-                                        etPeso.setText(String.valueOf(response.getInt("Peso")));
-                                        etComidafav.setText(String.valueOf(response.getInt("Comida Fav")));
+                                        etNombre.setText(response.getString("nombre"));
+                                        etCumpleaños.setText(response.getString("cumpleaños"));
+                                        etEstatura.setText(response.getString("estatura"));
+                                        etPeso.setText(response.getString("peso"));
+                                        etComidafav.setText(response.getString("comidafav"));
                                     } catch (JSONException e) {
                                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
@@ -239,12 +239,12 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 JSONObject producto = new JSONObject();
                 try {
-                    producto.put("Numero",etNumero.getText().toString());
-                    producto.put("Nombre",etNombre.getText().toString());
+                    producto.put("numero",etNumero.getText().toString());
+                    producto.put("nombre",etNombre.getText().toString());
                     producto.put("cumpleaños",etCumpleaños.getText().toString());
-                    producto.put("Estatura",Float.parseFloat(etEstatura.getText().toString()));
-                    producto.put("Peso",Float.parseFloat(etPeso.getText().toString()));
-                    producto.put("Comida fav",etComidafav.getText().toString());
+                    producto.put("estatura",etEstatura.getText().toString());
+                    producto.put("peso",etPeso.getText().toString());
+                    producto.put("comidafav",etComidafav.getText().toString());
                 } catch (JSONException e) {
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -256,7 +256,7 @@ public class MainActivity extends Activity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    if (response.getString("status").equals("Producto insertado")) {
+                                    if (response.getString("status").equals("Personaje insertado")) {
                                         Toast.makeText(MainActivity.this, "Producto insertado con EXITO!", Toast.LENGTH_SHORT).show();
                                             etNumero.setText("");
                                             etNombre.setText("");
@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
         });
     }
     protected void listarProductos(){
-        String url="http://10.10.62.6:3000/";
+        String url="http://10.10.62.3:3000/";
         jsonArrayRequest= new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -295,10 +295,10 @@ public class MainActivity extends Activity {
                     public void onResponse(JSONArray response) {
                         for(int i=0;i<response.length();i++){
                             try {
-                                String Numero=response.getJSONObject(i).getString("Numero");
-                                String Nombre=response.getJSONObject(i).getString("Nombre");
-                                String Cumpleaños=response.getJSONObject(i).getString("Cumpleaños");
-                                origenDatos.add(Numero + ": " +Nombre+ ": " +Cumpleaños);
+                                String numero=response.getJSONObject(i).getString("numero");
+                                String nombre=response.getJSONObject(i).getString("nombre");
+                                String cumpleaños=response.getJSONObject(i).getString("cumpleaños");
+                                origenDatos.add(numero + ": " +nombre+ ": " +cumpleaños);
                             } catch (JSONException e) {
 
                             }
@@ -306,7 +306,7 @@ public class MainActivity extends Activity {
                         adapter=new ArrayAdapter<String>(MainActivity.this,
                                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                                 origenDatos);
-                        lvProductos.setAdapter(adapter);
+                        lvPersonajes.setAdapter(adapter);
                     }
                 },
                 new Response.ErrorListener() {
